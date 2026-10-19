@@ -1,2 +1,2 @@
 A repo for developing basic Kubernetes skills 
-Inded it is
+Indeed it is
