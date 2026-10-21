@@ -1,5 +1,8 @@
+import json 
+
 level_dict = {}
 skipped = 0 
+errors = []
 
 VALID_LEVELS = ("INFO", "WARN", "ERROR", "DEBUG") 
 
@@ -24,9 +27,21 @@ with open("app.log") as f:
             log_dict = parse_line(line) 
             level = log_dict["level"]
             level_dict[level] = level_dict.get(level, 0) + 1
+            if level == "ERROR": 
+                errors.append(log_dict["message"])
             
         except ValueError as e: 
             print(e)
             skipped += 1
     print(level_dict)
+    print(errors)
     print("skipped:", skipped)
+
+to_json = { 
+    "counts": level_dict,
+    "skipped": skipped,
+    "errors": errors
+}
+
+with open ("report.json", "w") as fp: 
+    json.dump(to_json, fp, indent=2)

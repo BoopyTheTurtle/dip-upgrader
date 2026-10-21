@@ -1,0 +1,14 @@
+{
+  "counts": {
+    "INFO": 9,
+    "WARN": 3,
+    "ERROR": 3,
+    "DEBUG": 3
+  },
+  "skipped": 2,
+  "errors": [
+    "Deprecation API returned 2 blockers",
+    "Failed to allocate shard [logs][3]",
+    "Failed to allocate shard [logs][3]"
+  ]
+}
