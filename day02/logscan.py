@@ -1,4 +1,5 @@
 import json 
+import sys 
 
 level_dict = {}
 skipped = 0 
@@ -20,22 +21,26 @@ def parse_line(line):
         "message": parts[4].strip()
     }
     return log_dict 
+try: 
+    with open("app.log") as f:
+        for line in f: 
+            try: 
+                log_dict = parse_line(line) 
+                level = log_dict["level"]
+                level_dict[level] = level_dict.get(level, 0) + 1
+                if level == "ERROR": 
+                    errors.append(log_dict["message"])
+                
+            except ValueError as e: 
+                print(e)
+                skipped += 1
+        print(level_dict)
+        print(errors)
+        print("skipped:", skipped)
 
-with open("app.log") as f:
-    for line in f: 
-        try: 
-            log_dict = parse_line(line) 
-            level = log_dict["level"]
-            level_dict[level] = level_dict.get(level, 0) + 1
-            if level == "ERROR": 
-                errors.append(log_dict["message"])
-            
-        except ValueError as e: 
-            print(e)
-            skipped += 1
-    print(level_dict)
-    print(errors)
-    print("skipped:", skipped)
+except FileNotFoundError as e:
+    print (e, file=sys.stderr) 
+    sys.exit(1)
 
 to_json = { 
     "counts": level_dict,
